@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PML Prediction Assignment Writeup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 2rem;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+        }
+        pre {
+            background: #e9ecef;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            color: #d63384;
+            font-family: "Courier New", Courier, monospace;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 0.5rem;
+            text-align: left;
+        }
+        th {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Data Analysis Report</h1>
+    <p>This document presents an exploratory data analysis conducted to understand the characteristics and trends within a dataset.</p>
+
+    <h2>1. Dataset Overview</h2>
+    <p>The dataset contains multiple variables that represent various features of interest. A summary of the key variables is presented below:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Variable</th>
+                <th>Description</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>age</td>
+                <td>Age of the individuals</td>
+                <td>Numeric</td>
+            </tr>
+            <tr>
+                <td>income</td>
+                <td>Annual income in USD</td>
+                <td>Numeric</td>
+            </tr>
+            <tr>
+                <td>gender</td>
+                <td>Gender of the individuals</td>
+                <td>Categorical</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>2. Summary Statistics</h2>
+    <p>The following are the key summary statistics for the numeric variables in the dataset:</p>
+
+    <pre>
+age:
+  Min.   : 18
+  Median : 35
+  Mean   : 37.5
+  Max.   : 65
+
+income:
+  Min.   : 20,000
+  Median : 50,000
+  Mean   : 54,300
+  Max.   : 150,000
+    </pre>
+
+    <h2>3. Visualizations</h2>
+    <h3>3.1 Age Distribution</h3>
+    <p>The age distribution shows a concentration of individuals in the 25-45 age range, as visualized below:</p>
+    <img src="https://via.placeholder.com/600x300?text=Age+Distribution+Histogram" alt="Age Distribution Histogram" />
+
+    <h3>3.2 Income by Gender</h3>
+    <p>The box plot below illustrates income distribution by gender, highlighting potential differences:</p>
+    <img src="https://via.placeholder.com/600x300?text=Income+by+Gender+Boxplot" alt="Income by Gender Boxplot" />
+
+    <h2>4. Insights and Conclusion</h2>
+    <p>Based on the analysis:</p>
+    <ul>
+        <li>The majority of individuals are within the 25-45 age range.</li>
+        <li>Income tends to be higher for individuals above the median age.</li>
+        <li>There are observable variations in income distribution by gender.</li>
+    </ul>
+    <p>Further analysis could focus on understanding the relationship between income and other demographic variables.</p>
+
+    <footer>
+        <p>Generated as part of a data analysis exercise. All figures are hypothetical.</p>
+    </footer>
+</body>
+</html>

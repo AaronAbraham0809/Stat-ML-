@@ -1,0 +1,90 @@
+---
+title: "Practical Machine Learning Project"
+author: "Aaron Abraham Mathews"
+date: "January 5, 2025"
+output: html_document
+---
+
+## Objective
+
+This project investigates how well participants perform barbell lifting exercises by -
+analyzing accelerometer data collected from different body parts (belt, forearm, arm, and dumbbell). 
+The goal is to classify the movements into five categories (Class A to Class E). 
+Data preprocessing, model building, and validation are carried out to identify the best-performing machine learning model.
+
+### Data Source
+
+The training and testing datasets are sourced from the *Weight Lifting Exercise Dataset*. Links to the datasets are provided below:  
+
+- Dataset Information: [http://groupware.les.inf.puc-rio.br/har](http://groupware.les.inf.puc-rio.br/har)  
+- Training Data: [pml-training.csv](https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv)  
+- Testing Data: [pml-testing.csv](https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv)  
+
+```{r, message=FALSE, warning=FALSE}
+# Load required libraries
+library(caret)
+library(randomForest)
+library(rpart)
+library(rpart.plot)
+
+# Load datasets
+train_raw <- read.csv("pml-training.csv", na.strings = c("NA", "#DIV/0!", ""))
+test_raw <- read.csv("pml-testing.csv", na.strings = c("NA", "#DIV/0!", ""))
+
+# Data dimensions
+cat("Training Data Dimensions:", dim(train_raw), "\n")
+cat("Testing Data Dimensions:", dim(test_raw), "\n")
+
+# Data Cleaning
+# Remove columns with mostly missing values and unnecessary columns
+valid_columns <- colSums(is.na(train_raw)) < nrow(train_raw) * 0.5
+train_clean <- train_raw[, valid_columns]
+test_clean <- test_raw[, valid_columns]
+train_clean <- train_clean[, 8:ncol(train_clean)]  # Remove first 7 irrelevant columns
+test_clean <- test_clean[, 8:ncol(test_clean)]
+
+# Remove near-zero variance predictors
+nzv <- nearZeroVar(train_clean)
+train_clean <- train_clean[, -nzv]
+test_clean <- test_clean[, -nzv]
+
+# Check cleaned data dimensions
+cat("Cleaned Training Data Dimensions:", dim(train_clean), "\n")
+cat("Cleaned Testing Data Dimensions:", dim(test_clean), "\n")
+
+# Split data into training and testing subsets
+set.seed(12345)
+inTrain <- createDataPartition(y = train_clean$classe, p = 0.7, list = FALSE)
+training <- train_clean[inTrain, ]
+testing <- train_clean[-inTrain, ]
+
+cat("Training Subset Dimensions:", dim(training), "\n")
+cat("Testing Subset Dimensions:", dim(testing), "\n")
+
+# Model 1: Linear Discriminant Analysis (LDA)
+set.seed(100)
+lda_model <- train(classe ~ ., data = training, method = "lda")
+lda_predictions <- predict(lda_model, testing)
+lda_cm <- confusionMatrix(lda_predictions, testing$classe)
+cat("LDA Accuracy:", lda_cm$overall["Accuracy"], "\n")
+
+# Model 2: Decision Tree
+set.seed(200)
+decision_tree_model <- rpart(classe ~ ., data = training, method = "class")
+decision_tree_predictions <- predict(decision_tree_model, testing, type = "class")
+decision_tree_cm <- confusionMatrix(decision_tree_predictions, testing$classe)
+cat("Decision Tree Accuracy:", decision_tree_cm$overall["Accuracy"], "\n")
+
+# Plot the decision tree
+rpart.plot(decision_tree_model)
+
+# Model 3: Random Forest
+set.seed(300)
+random_forest_model <- randomForest(classe ~ ., data = training, ntree = 500)
+random_forest_predictions <- predict(random_forest_model, testing, type = "class")
+random_forest_cm <- confusionMatrix(random_forest_predictions, testing$classe)
+cat("Random Forest Accuracy:", random_forest_cm$overall["Accuracy"], "\n")
+
+# Evaluate best model (Random Forest) on the test set
+final_predictions <- predict(random_forest_model, test_clean)
+cat("Final Predictions for Test Set:", final_predictions, "\n")
