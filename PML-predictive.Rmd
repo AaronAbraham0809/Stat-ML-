@@ -75,7 +75,7 @@ decision_tree_predictions <- predict(decision_tree_model, testing, type = "class
 decision_tree_cm <- confusionMatrix(decision_tree_predictions, testing$classe)
 cat("Decision Tree Accuracy:", decision_tree_cm$overall["Accuracy"], "\n")
 
-# Plot the decision tree
+Plot the decision tree
 rpart.plot(decision_tree_model)
 
 # Model 3: Random Forest
